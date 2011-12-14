@@ -1,8 +1,11 @@
 /*Module Dependencies*/
 
 var express = require('express');
+var io = require('socket.io').listen(app);
 
 var app = module.exports = express.CreateServer();
+
+app.listen(8080);
 
 //Configuration
 var pub = __dirname + '/public';
@@ -12,10 +15,6 @@ app.configure(function() {
     app.set('view engine', 'ejs');
     app.use(express.bodyParser());
     app.use(express.methodOverride());
-    app.use(express.compiler({
-        src: pub, 
-        enable: ['sass']
-    }));
     app.use(express.static(pub));
     app.use(app.router);
 });
