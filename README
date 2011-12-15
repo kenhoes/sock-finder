@@ -1,1 +1,4 @@
 Sock Finder Project
+
+Basic click collection for now pushing to mongo and repeating results on the index page.
+Requires express, mongoose, and socket.io
