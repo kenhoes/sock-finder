@@ -1,9 +1,11 @@
 /*Module Dependencies*/
 
 var express = require('express');
-var io = require('socket.io').listen(app);
+//var io = require('socket.io').listen(app);
 
-var app = module.exports = express.CreateServer();
+//var app = module.exports = express.CreateServer();
+var app = require('express').createServer()
+var io = require('socket.io').listen(app);
 
 app.listen(8080);
 
@@ -33,3 +35,24 @@ app.configure('production', function() {
 //Load the database handler
 var MongoHandler = require('./mongohandler').MongoHandler;
 var MongoHandler = new MongoHandler();
+
+//routes if needed
+
+//sockets
+app.get('/', function(req,res) {
+    res.sendfile(__dirname + '/index.html');
+});
+
+//listeners and emitters
+io.sockets.on('connection', function(socket) {
+    
+    socket.on('sendEvent', function(clickId) {
+        io.sockets.emit('updatelog', clickId);
+        MongoHandler.inputEvent({
+            timestamp: new Date(),
+            clickedId: clickId
+        }, function(error, docs) {
+            //res.redirect('/');
+            });
+    });
+});

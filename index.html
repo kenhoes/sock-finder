@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+<!--        <link rel="stylesheet" type="text/css" href="/css/styles.css">-->
+        <script>
+            var socket = io.connect('http://localhost:8080');
+            
+            //listeners
+            //possibly update a list of events on the page for confirmation
+            socket.on('updatelog', function(clickId) {
+                $('#logevents').append(clickId + ' was pressed' + '<br />');
+            })
+            
+            //on load of page
+            $(function() {
+                //when the client clicks on a button grab the div id, tell server to execute sendEvent and send the div id
+                $('button').click( function() {
+                    var clickId = $(this).attr("id");
+                    console.log(clickId);
+                    socket.emit('sendEvent', clickId)
+                })
+            })
+            
+            
+        </script>
+    </head>
+    <body>
+        <div>
+            <button id="button1">Button 1</button>
+            <button id="button2">Button 2</button>
+            <button id="button3">Button 3</button>
+            <div id="logevents"><br><br>Logging Events from the server:<br></div>
+            
+        </div>
+    </body>
+</html>
