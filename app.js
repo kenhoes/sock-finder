@@ -53,17 +53,21 @@ app.get('/newTest', function(req,res) {
 io.sockets.on('connection', function(socket) {
     
     socket.on('sendEvent', function(clickId) {
+        //for (i=0; i<=1000000; i++) 
+        //for stress testing only
+        {
 
-        io.sockets.emit('updatelog', clickId);
+            io.sockets.emit('updatelog', clickId);
         
-        MongoHandler.inputEvent({
-            timestamp: new Date(),
-            clickedId: clickId
-        }, function(error, docs) {
-            //res.redirect('/');
+            MongoHandler.inputEvent({
+                timestamp: new Date(),
+                clickedId: clickId
+            }, function(error, docs) {
+                //res.redirect('/');
             });
-
+        //}
     });
+    
 });
 
 
