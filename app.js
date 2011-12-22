@@ -13,12 +13,13 @@ app.listen(8080);
 var pub = __dirname + '/public';
 
 app.configure(function() {
-    app.set('views', __dirname + '/views');
-    app.set('view engine', 'ejs');
+    //app.set('views', __dirname + '/views');
+    //app.set('view engine', 'ejs');
     app.use(express.bodyParser());
     app.use(express.methodOverride());
     app.use(express.static(pub));
     app.use(app.router);
+    app.use(express.static(__dirname + '/public'));
 });
     
 app.configure('development', function(){
@@ -38,21 +39,31 @@ var MongoHandler = new MongoHandler();
 
 //routes if needed
 
-//sockets
+
 app.get('/', function(req,res) {
     res.sendfile(__dirname + '/index.html');
 });
 
+app.get('/newTest', function(req,res) {
+    res.sendfile(__dirname + '/newTest.html');
+});
+
+//sockets
 //listeners and emitters
 io.sockets.on('connection', function(socket) {
     
     socket.on('sendEvent', function(clickId) {
+
         io.sockets.emit('updatelog', clickId);
+        
         MongoHandler.inputEvent({
             timestamp: new Date(),
             clickedId: clickId
         }, function(error, docs) {
             //res.redirect('/');
             });
+
     });
 });
+
+
